@@ -6,7 +6,8 @@
 
 import { LitElement, html, css } from 'lit';
 
-import './components/test-component';
+import './components/search-bar';
+import './components/product-table';
 
 /**
  * An example element.
@@ -16,6 +17,58 @@ import './components/test-component';
  * @csspart button - The button
  */
 export class MyApp extends LitElement {
+  static get properties() {
+    return {
+      filteredList: { type: Array },
+    };
+  }
+
+  constructor() {
+    super();
+    this.searchText;
+    this.filteredList = [];
+    this.finalList = [];
+    this.productList = [
+      {
+        category: 'Sporting Goods',
+        price: '$49.99',
+        stocked: false,
+        name: 'Football',
+      },
+      {
+        category: 'Sporting Goods',
+        price: '$9.99',
+        stocked: true,
+        name: 'Baseball',
+      },
+      {
+        category: 'Sporting Goods',
+        price: '$29.99',
+        stocked: true,
+        name: 'Basketball',
+      },
+      {
+        category: 'Electronics',
+        price: '$99.99',
+        stocked: true,
+        name: 'iPod Touch',
+      },
+      {
+        category: 'Electronics',
+        price: '$399.99',
+        stocked: true,
+        name: 'iPhone 5',
+      },
+      {
+        category: 'Electronics',
+        price: '$199.99',
+        stocked: false,
+        name: 'Nexus 7',
+      },
+    ];
+    this.filteredList = [...this.productList];
+  }
+
   /**
    * Gets style.
    *
@@ -25,15 +78,34 @@ export class MyApp extends LitElement {
     return [
       css`
         main {
-          background-color: grey;
+          background-color: lightgrey;
+          width: 600px;
           height: 100%;
+          margin: 50px;
         }
       `,
     ];
   }
+
   render() {
-    return html`<main><test-component></test-component></main>`;
+    return html`<main>
+      <search-bar .filters=${this.filterList}></search-bar>
+      <product-table .productList=${this.filteredList}></product-table>
+    </main>`;
   }
+
+  filterList = (searchText, isChecked) => {
+    const tempItems = [...this.productList];
+    let filteredItems;
+    if (isChecked) {
+      filteredItems = tempItems.filter((item) => (item.name.includes(searchText) && item.stocked));
+    } else {
+      filteredItems = tempItems.filter((item) =>
+        item.name.includes(searchText)
+      );
+    }
+    this.filteredList = [...filteredItems];
+  };
 }
 
 customElements.define('my-app', MyApp);
