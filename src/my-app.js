@@ -5,16 +5,11 @@
  */
 
 import { LitElement, html, css } from 'lit';
-
 import './components/search-bar';
 import './components/product-table';
 
 /**
- * An example element.
- *
- * @fires count-changed - Indicates when the count changes
- * @slot - This element has a slot
- * @csspart button - The button
+ * MyApp component for filterable table.
  */
 export class MyApp extends LitElement {
   static get properties() {
@@ -23,11 +18,18 @@ export class MyApp extends LitElement {
     };
   }
 
+  /**
+   * Constructor function.
+   */
   constructor() {
     super();
     this.searchText;
     this.filteredList = [];
     this.finalList = [];
+
+    /**
+     * product list
+     */
     this.productList = [
       {
         category: 'Sporting Goods',
@@ -79,14 +81,23 @@ export class MyApp extends LitElement {
       css`
         main {
           background-color: lightgrey;
-          width: 600px;
+          width: 300px;
           height: 100%;
           margin: 50px;
+          border: 1px solid black;
+        }
+        search-bar {
+          margin-left: 39px;
         }
       `,
     ];
   }
 
+  /**
+   * Renders html
+   *
+   * @returns {Array}
+   */
   render() {
     return html`<main>
       <search-bar .filters=${this.filterList}></search-bar>
@@ -94,11 +105,19 @@ export class MyApp extends LitElement {
     </main>`;
   }
 
+  /**
+   * Filters the list.
+   *
+   * @param {string} searchText
+   * @param {boolean} isChecked
+   */
   filterList = (searchText, isChecked) => {
     const tempItems = [...this.productList];
     let filteredItems;
     if (isChecked) {
-      filteredItems = tempItems.filter((item) => (item.name.includes(searchText) && item.stocked));
+      filteredItems = tempItems.filter(
+        (item) => item.name.includes(searchText) && item.stocked
+      );
     } else {
       filteredItems = tempItems.filter((item) =>
         item.name.includes(searchText)

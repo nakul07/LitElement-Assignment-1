@@ -2,18 +2,36 @@ import { LitElement, html, css } from 'lit';
 import './product-catagory-row';
 import './product-row';
 
+/**
+ * product-table component
+ */
 export class ProductTable extends LitElement {
+  /**
+   * Get styles
+   */
   static get styles() {
     return css`
       :host {
         display: block;
-        border: solid 1px gray;
+        border: solid 1px black;
         padding: 16px;
         max-width: 800px;
+      }
+      ul {
+        list-style-type: none;
+      }
+      product-cat-row {
+        margin-bottom: 10px;
+      }
+      product-row {
+        margin-bottom: 10px;
       }
     `;
   }
 
+  /**
+   * Get properties
+   */
   static get properties() {
     return {
       productList: { type: Array },
@@ -25,6 +43,9 @@ export class ProductTable extends LitElement {
     };
   }
 
+  /**
+   * constructor function
+   */
   constructor() {
     super();
     this.productList = [];
@@ -35,6 +56,11 @@ export class ProductTable extends LitElement {
     this.lastCat = null;
   }
 
+  /**
+   * renders html
+   *
+   * @returns {Array}
+   */
   render() {
     return html`
       <ul>
@@ -43,8 +69,7 @@ export class ProductTable extends LitElement {
             this.lastCat = list.category;
             return html`
               <li>
-                <product-cat-row .catagory=${list.category}></product-cat-row
-                ><br />
+                <product-cat-row .catagory=${list.category}></product-cat-row>
                 <product-row
                   .name=${list.name}
                   .price=${list.price}

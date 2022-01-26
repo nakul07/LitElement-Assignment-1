@@ -1,20 +1,35 @@
 import { LitElement, html, css, render } from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * Styles
+ */
 let styles = {
   color: 'red',
 };
 
+/**
+ * Product-row compoennt
+ */
 export class ProductRow extends LitElement {
+  /**
+   * Get styles
+   */
   static get styles() {
     return css`
       :host {
         display: block;
         max-width: 800px;
       }
+      .price {
+        margin-left: 30px;
+      }
     `;
   }
 
+  /**
+   * get properties
+   */
   static get properties() {
     return {
       productList: { type: Array },
@@ -24,6 +39,9 @@ export class ProductRow extends LitElement {
     };
   }
 
+  /**
+   * constructor function
+   */
   constructor() {
     super();
     this.productList;
@@ -32,12 +50,16 @@ export class ProductRow extends LitElement {
     this.stocked;
   }
 
+  /**
+   *
+   * @returns {Array}
+   */
   render() {
     return html`
-      <tr>
-        <td style=${!this.stocked ? styleMap(styles) : 'black'}>${this.name}</td>
-        <td>${this.price}</td>
-      </tr>
+      <span style=${!this.stocked ? styleMap(styles) : 'black'}
+        >${this.name}</span
+      >
+      <span class="price">${this.price}</span>
     `;
   }
 }
